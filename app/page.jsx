@@ -1,5 +1,5 @@
 import { MapComponent } from "./components/Map";
-import { MapProvider } from "./providers/map-provider";
+import { MapProvider } from "./providers/MapProvider";
 import SearchBar from "./components/SearchBar"
 import StationList from "./components/StationList"
 export default function Home() {
@@ -31,4 +31,3 @@ export default function Home() {
   )
 
 }
-

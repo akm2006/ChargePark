@@ -18,7 +18,3 @@ body{
     transform: translateX(100%);
   }
 }
-
-.animate-border-flow {
-  animation: border-flow 10s linear infinite;
-}
