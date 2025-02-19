@@ -1,4 +1,4 @@
-import { Battery, ParkingMeterIcon as CarParking } from "lucide-react"
+import { PlugZap, SquareParking } from "lucide-react"
 
 const stations = [
   { id: 1, name: "EV Station A", type: "charging", available: 3 },
@@ -11,13 +11,13 @@ export default function StationList() {
   return (
     <div className="space-y-5">
       {stations.map((station) => (
-        <div key={station.id} className=" text-white bg-gradient-to-l from-blue-500/30 to-green-500/10 p-5 rounded-[10px] border border-blue-800">
+        <div key={station.id} className=" text-white bg-gradient-to-l from-blue-500/30 to-green-500/10 p-5 rounded-[10px] ">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               {station.type === "charging" ? (
-                <Battery className=" text-green-600 mr-4" />
+                <PlugZap size={40} strokeWidth={3} className=" text-green-500 mr-4" />
               ) : (
-                <CarParking className="text-blue-400 mr-4" />
+                <SquareParking size={40} strokeWidth={3} className="text-blue-400 mr-4" />
               )}
               <h3 className="font-semibold">{station.name}</h3>
             </div>
