@@ -5,7 +5,7 @@ import Link from "next/link"
 
 const LandingPage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 via-teal-400 to-green-400">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
       {/* Header */}
       <motion.header
         initial={{ opacity: 0, y: -50 }}
@@ -16,17 +16,17 @@ const LandingPage = () => {
         {/* Navigation */}
         <nav className="flex justify-between items-center mb-16">
           <motion.div whileHover={{ scale: 1.05 }} className="flex items-center space-x-2">
-            <Zap size={32} className="text-white" />
+            <Zap size={32} className="text-emerald-400" />
             <span className="text-2xl font-bold text-white">ChargePark</span>
           </motion.div>
           <Link href={"/search"}>  <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-white text-blue-600 px-6 py-2 rounded-full font-semibold shadow-lg"
+            className="bg-emerald-400 text-gray-900 px-6 py-2 rounded-full font-semibold shadow-md hover:bg-emerald-500"
           >
             Get Started
           </motion.button></Link>
-         
+
         </nav>
 
         {/* Hero section */}
@@ -40,9 +40,9 @@ const LandingPage = () => {
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
               Finding EV Charging
               <br />
-              <span className="text-blue-900">Made Simple</span>
+              <span className="text-emerald-400">Made Simple</span>
             </h1>
-            <p className="text-white text-xl mb-8">
+            <p className="text-gray-300 text-xl mb-8">
               Locate nearby charging stations and parking spots in real-time. Navigate with confidence, charge with
               ease.
             </p>
@@ -55,14 +55,14 @@ const LandingPage = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-blue-900 text-white px-8 py-3 rounded-full font-semibold shadow-lg"
+                className="bg-emerald-400 text-gray-900 px-8 py-3 rounded-full font-semibold shadow-md hover:bg-emerald-500"
               >
                 Download App
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold shadow-lg"
+                className="bg-gray-700 text-white px-8 py-3 rounded-full font-semibold shadow-md hover:bg-gray-600"
               >
                 Learn More
               </motion.button>
@@ -86,24 +86,24 @@ const LandingPage = () => {
                   repeat: Number.POSITIVE_INFINITY,
                   ease: "easeInOut",
                 }}
-                className="bg-white p-8 rounded-2xl shadow-2xl"
+                className="bg-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-700"
               >
                 <div className="flex justify-center mb-4">
-                  <MapPin size={48} className="text-blue-600" />
+                  <MapPin size={48} className="text-emerald-400" />
                 </div>
-                <div className="bg-gray-100 rounded-lg p-4 mb-4">
+                <div className="bg-gray-700 rounded-lg p-4 mb-4">
                   <div className="flex items-center space-x-2">
                     <Search size={20} className="text-gray-400" />
                     <span className="text-gray-400">Search for charging stations...</span>
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                  <motion.div whileHover={{ scale: 1.05 }} className="bg-blue-50 p-4 rounded-lg">
-                    <Battery className="text-blue-600 mb-2" />
+                  <motion.div whileHover={{ scale: 1.05 }} className="bg-gray-700 p-4 rounded-lg">
+                    <Battery className="text-blue-400 mb-2" />
                     <h3 className="font-semibold">Fast Charging</h3>
                   </motion.div>
-                  <motion.div whileHover={{ scale: 1.05 }} className="bg-green-50 p-4 rounded-lg">
-                    <Car className="text-green-600 mb-2" />
+                  <motion.div whileHover={{ scale: 1.05 }} className="bg-gray-700 p-4 rounded-lg">
+                    <Car className="text-green-400 mb-2" />
                     <h3 className="font-semibold">Smart Parking</h3>
                   </motion.div>
                 </div>
@@ -138,10 +138,10 @@ const LandingPage = () => {
               description: "Locate available parking spots nearby",
             },
           ].map((feature, index) => (
-            <motion.div key={index} whileHover={{ scale: 1.05 }} className="bg-white/90 p-6 rounded-xl shadow-lg">
-              <div className="text-blue-600 mb-4">{feature.icon}</div>
+            <motion.div key={index} whileHover={{ scale: 1.05 }} className="bg-gray-800 p-6 rounded-xl shadow-md border border-gray-700">
+              <div className="text-emerald-400 mb-4">{feature.icon}</div>
               <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-gray-600">{feature.description}</p>
+              <p className="text-gray-400">{feature.description}</p>
             </motion.div>
           ))}
         </div>
@@ -152,25 +152,25 @@ const LandingPage = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
-        className="bg-blue-900 text-white"
+        className="bg-gray-900 text-white"
       >
         <div className="container mx-auto px-4 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {/* Company Info */}
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <Zap size={24} />
+                <Zap size={24} className="text-emerald-400" />
                 <h3 className="text-xl font-bold">ChargePark</h3>
               </div>
-              <p className="text-blue-200 mb-4">Making EV charging and parking simple and accessible for everyone.</p>
+              <p className="text-gray-400 mb-4">Making EV charging and parking simple and accessible for everyone.</p>
             </div>
 
             {/* Technology Stack */}
             <div>
               <h3 className="text-lg font-semibold mb-4">Powered By</h3>
-              <ul className="space-y-2 text-blue-200">
+              <ul className="space-y-2 text-gray-400">
                 <li className="flex items-center space-x-2">
-                  <MapIcon size={16} />
+                  <MapIcon size={16} className="text-gray-500" />
                   <span>Google Maps API</span>
                 </li>
                 <li>Next.js</li>
@@ -182,7 +182,7 @@ const LandingPage = () => {
             {/* Quick Links */}
             <div>
               <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-              <ul className="space-y-2 text-blue-200">
+              <ul className="space-y-2 text-gray-400">
                 <li>About Us</li>
                 <li>Find Stations</li>
                 <li>Parking Solutions</li>
@@ -193,13 +193,13 @@ const LandingPage = () => {
             {/* Contact Info */}
             <div>
               <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
-              <div className="space-y-2 text-blue-200">
+              <div className="space-y-2 text-gray-400">
                 <div className="flex items-center space-x-2">
-                  <Mail size={16} />
+                  <Mail size={16} className="text-gray-500" />
                   <span>contact@chargepark.com</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Phone size={16} />
+                  <Phone size={16} className="text-gray-500" />
                   <span>+1 (555) 123-4567</span>
                 </div>
               </div>
@@ -207,10 +207,10 @@ const LandingPage = () => {
           </div>
 
           {/* Copyright Bar */}
-          <div className="border-t border-blue-800 mt-8 pt-8 text-center text-blue-200">
+          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
             <p>© 2024 ChargePark. All rights reserved.</p>
             <div className="flex justify-center items-center space-x-2 mt-4">
-              <motion.div whileHover={{ scale: 1.1 }} className="bg-blue-800 p-2 rounded-full">
+              <motion.div whileHover={{ scale: 1.1 }} className="bg-gray-800 p-2 rounded-full">
                 <Github size={20} />
               </motion.div>
             </div>
@@ -222,4 +222,3 @@ const LandingPage = () => {
 }
 
 export default LandingPage
-
