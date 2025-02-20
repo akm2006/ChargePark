@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { GoogleMap, Marker, InfoWindow, DirectionsRenderer } from "@react-google-maps/api";
-import { LoaderPinwheel } from "lucide-react";
+import { LoaderPinwheel, PlugZap, SquareParking } from "lucide-react";
+
 const defaultMapContainerStyle = {
   width: "100%",
-  height: "80vh",
+  height: "60vh", // Adjusted height
   borderRadius: "1rem",
 };
 
@@ -30,6 +31,10 @@ const MapComponent = () => {
   const [distance, setDistance] = useState(null);
   const [directions, setDirections] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [stationsWithDistance, setStationsWithDistance] = useState([]);
+  const [parkingsWithDistance, setParkingsWithDistance] = useState([]);
+  const [radius, setRadius] = useState(1500);  // Reduced radius
+  const [initialFetchComplete, setInitialFetchComplete] = useState(false);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -51,12 +56,10 @@ const MapComponent = () => {
     }
   }, []);
 
-  const fetchPlaces = (map, keyword, setState) => {
+  const fetchPlaces = useCallback((map, keyword, setState) => {
     if (!window.google) return;
-
     setIsMapLoaded(true);
 
- 
     setEvMarkerIcon({
       url: "/ev-marker.png",
       scaledSize: new window.google.maps.Size(30, 30),
@@ -71,7 +74,7 @@ const MapComponent = () => {
 
     const request = {
       location: userLocation,
-      radius: 5000, 
+      radius: radius,
       keyword: keyword,
     };
 
@@ -82,26 +85,80 @@ const MapComponent = () => {
         console.error(`Error fetching ${keyword}:`, status);
       }
     });
-  };
+  }, [radius, userLocation]);
 
-  const calculateDistance = (destination) => {
-    const service = new window.google.maps.DistanceMatrixService();
-    service.getDistanceMatrix(
-      {
-        origins: [userLocation],
-        destinations: [destination],
-        travelMode: window.google.maps.TravelMode.DRIVING,
-      },
-      (response, status) => {
-        if (status === window.google.maps.DistanceMatrixStatus.OK) {
-          const distanceText = response.rows[0].elements[0].distance.text;
-          setDistance(distanceText);
-        } else {
-          console.error("Error calculating distance:", status);
-        }
+  const calculateDistance = useCallback((destination) => {
+    return new Promise((resolve, reject) => {
+      if (!window.google || !userLocation) {
+        reject("Google Maps API not loaded or user location not available.");
+        return;
       }
-    );
-  };
+
+      const service = new window.google.maps.DistanceMatrixService();
+      service.getDistanceMatrix(
+        {
+          origins: [userLocation],
+          destinations: [destination],
+          travelMode: window.google.maps.TravelMode.DRIVING,
+        },
+        (response, status) => {
+          if (status === window.google.maps.DistanceMatrixStatus.OK) {
+            const distanceText = response.rows[0].elements[0].distance.text;
+            resolve(distanceText);
+          } else {
+            console.error("Error calculating distance:", status);
+            reject(status);
+          }
+        }
+      );
+    });
+  }, [userLocation]);
+
+
+  useEffect(() => {
+    const addDistances = async () => {
+      if (evStations.length > 0 && userLocation) {
+        const updatedStations = await Promise.all(
+          evStations.map(async (station) => {
+            try {
+              const distance = await calculateDistance(station.geometry.location);
+              return { ...station, distance };
+            } catch (error) {
+              console.error("Failed to calculate distance for station:", station.name, error);
+              return { ...station, distance: "N/A" };
+            }
+          })
+        );
+        setStationsWithDistance(updatedStations);
+      }
+    };
+
+    addDistances();
+  }, [evStations, userLocation, calculateDistance]);
+
+
+  useEffect(() => {
+    const addParkingsDistance = async () => {
+      if (parkingSpaces.length > 0 && userLocation) {
+        const updatedParkings = await Promise.all(
+          parkingSpaces.map(async (parking) => {
+            try {
+              const distance = await calculateDistance(parking.geometry.location);
+              return { ...parking, distance };
+            } catch (error) {
+              console.error("Failed to calculate distance for parking:", parking.name, error);
+              return { ...parking, distance: "N/A" };
+            }
+          })
+        );
+        setParkingsWithDistance(updatedParkings);
+      }
+    };
+
+    addParkingsDistance();
+  }, [parkingSpaces, userLocation, calculateDistance]);
+
+
 
   const getRoute = (destination) => {
     const directionsService = new window.google.maps.DirectionsService();
@@ -127,30 +184,40 @@ const MapComponent = () => {
     getRoute(location.geometry.location);
   };
 
+
+  const updateData = useCallback((map) => {
+    if (!initialFetchComplete) {  // Only run if initial fetch not complete
+        fetchPlaces(map, "EV charging station", setEvStations);
+        fetchPlaces(map, "parking", setParkingSpaces);
+    }
+    setInitialFetchComplete(true);
+}, [fetchPlaces, setEvStations, setParkingSpaces, initialFetchComplete]); // fetchPlaces needs to be in dependency array
   return (
     <div className="w-full">
       {isLoading ? (
         <div className="flex justify-center items-center h-full w-full">
-          <div className="animate-spin"><LoaderPinwheel size={44} color="#020ae8" /></div> 
+          <div className="animate-spin"><LoaderPinwheel size={44} color="#020ae8" /></div>
         </div>
       ) : (
         userLocation && (
+          <>
           <GoogleMap
             mapContainerStyle={defaultMapContainerStyle}
             center={userLocation}
             zoom={defaultMapZoom}
             options={defaultMapOptions}
             onLoad={(map) => {
-              fetchPlaces(map, "EV charging station", setEvStations);
-              fetchPlaces(map, "parking", setParkingSpaces);
+             updateData(map);
+
             }}
+
           >
             <Marker
               position={userLocation}
               title="Your Location"
               icon={{
-                url: "/user-location.png", 
-                scaledSize: new window.google.maps.Size(50, 50), 
+                url: "/user-location.png",
+                scaledSize: new window.google.maps.Size(50, 50),
               }}
             />
 
@@ -225,6 +292,56 @@ const MapComponent = () => {
               />
             )}
           </GoogleMap>
+                    <div className="mt-8">
+                        <h2 className="text-2xl font-semibold mb-4">Nearby Charging Stations</h2>
+                        {stationsWithDistance.length > 0 ? (
+                            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {stationsWithDistance.map((station) => (
+                                    <li
+                                        key={station.place_id}
+                                        className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+                                    >
+                                        <div className="flex items-center mb-2">
+                                            <PlugZap className="text-green-500 mr-2" size={20} />
+                                            <h3 className="text-lg font-semibold text-gray-800">{station.name}</h3>
+                                        </div>
+                                        <p className="text-gray-600 text-sm">{station.vicinity}</p>
+                                        <p className="text-gray-700 mt-2">
+                                            Distance: {station.distance}
+                                        </p>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p className="text-gray-500">No charging stations found nearby.</p>
+                        )}
+                    </div>
+
+                    <div className="mt-8">
+                        <h2 className="text-2xl font-semibold mb-4">Nearby Parking Spaces</h2>
+                        {parkingsWithDistance.length > 0 ? (
+                            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {parkingsWithDistance.map((parking) => (
+                                    <li
+                                        key={parking.place_id}
+                                        className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+                                    >
+                                        <div className="flex items-center mb-2">
+                                            <SquareParking className="text-blue-500 mr-2" size={20} />
+                                            <h3 className="text-lg font-semibold text-gray-800">{parking.name}</h3>
+                                        </div>
+                                        <p className="text-gray-600 text-sm">{parking.vicinity}</p>
+                                        <p className="text-gray-700 mt-2">
+                                            Distance: {parking.distance}
+                                        </p>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p className="text-gray-500">No parking spaces found nearby.</p>
+                        )}
+                    </div>
+              </>
         )
       )}
     </div>

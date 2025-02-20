@@ -1,6 +1,7 @@
 import React from "react";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import { MapProvider } from "./providers/MapProvider";
 // import Logo from "./components/Logo"; // Import the logo component
 
 const inter = Inter({ subsets: ["latin"] });
@@ -12,6 +13,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
+    <MapProvider>
     <html lang="en">
       <body className={inter.className}>
         {/* <header className="p-4 flex justify-center bg-gray-100">
@@ -20,5 +22,6 @@ export default function RootLayout({ children }) {
         {children}
       </body>
     </html>
+    </MapProvider>
   );
 }
