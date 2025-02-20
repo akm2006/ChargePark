@@ -13,15 +13,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <MapProvider>
     <html lang="en">
       <body className={inter.className}>
-        {/* <header className="p-4 flex justify-center bg-gray-100">
-          <Logo />
-        </header> */}
-        {children}
+        <MapProvider>
+          {/* <header className="p-4 flex justify-center bg-gray-100">
+            <Logo />
+          </header> */}
+          {children}
+        </MapProvider>
       </body>
     </html>
-    </MapProvider>
   );
 }
