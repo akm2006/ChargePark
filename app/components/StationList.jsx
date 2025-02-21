@@ -14,7 +14,7 @@ export default function StationList() {
       {stations.map((station) => (
         <div
           key={station.id}
-          className="text-white bg-gray-800 p-4 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl hover:scale-105 border border-gray-700"
+          className="text-white bg-gray-400/30 p-4 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl hover:scale-105 border border-gray-700"
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center">

@@ -6,7 +6,7 @@ import StationList from "../components/StationList"
 
 export default function Home() {
   return (
-    <main className="flex flex-col min-h-screen bg-gradient-to-br from-blue-900 via-blue-700 to-green-600">
+    <main className="flex flex-col min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
       <header className="w-full p-4 text-center relative rounded-lg shadow-lg flex flex-col items-center justify-center overflow-hidden">
         <h1 className="text-5xl font-extrabold relative">
           <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400">
