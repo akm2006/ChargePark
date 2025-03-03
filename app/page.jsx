@@ -63,7 +63,7 @@ const LandingPage = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="bg-gray-700 text-white px-8 py-3 rounded-full font-semibold shadow-md hover:bg-gray-600"
-              >
+                onClick={() => window.open("https://docs.google.com/presentation/d/1r90L0EML6zCrIvwJhO_wvspkBptHEkto-GUDpTO3BbY/edit?usp=sharing", "_blank")}              >
                 Learn More
               </motion.button>
             </motion.div>
@@ -100,7 +100,7 @@ const LandingPage = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <motion.div whileHover={{ scale: 1.05 }} className="bg-gray-700 p-4 rounded-lg">
                     <Battery className="text-blue-400 mb-2" />
-                    <h3 className="font-semibold">Fast Charging</h3>
+                    <h3 className="font-semibold">EV Charging Station</h3>
                   </motion.div>
                   <motion.div whileHover={{ scale: 1.05 }} className="bg-gray-700 p-4 rounded-lg">
                     <Car className="text-green-400 mb-2" />
@@ -155,7 +155,7 @@ const LandingPage = () => {
         className="bg-gray-900 text-white"
       >
         <div className="container mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="flex flex-col md:flex-row justify-center gap-8">
             {/* Company Info */}
             <div>
               <div className="flex items-center space-x-2 mb-4">
@@ -179,31 +179,10 @@ const LandingPage = () => {
               </ul>
             </div>
 
-            {/* Quick Links */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>About Us</li>
-                <li>Find Stations</li>
-                <li>Parking Solutions</li>
-                <li>Support</li>
-              </ul>
-            </div>
+           
 
-            {/* Contact Info */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
-              <div className="space-y-2 text-gray-400">
-                <div className="flex items-center space-x-2">
-                  <Mail size={16} className="text-gray-500" />
-                  <span>contact@chargepark.com</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Phone size={16} className="text-gray-500" />
-                  <span>+1 (555) 123-4567</span>
-                </div>
-              </div>
-            </div>
+          
+            
           </div>
 
           {/* Copyright Bar */}
@@ -211,7 +190,7 @@ const LandingPage = () => {
             <p>© 2024 ChargePark. All rights reserved.</p>
             <div className="flex justify-center items-center space-x-2 mt-4">
               <motion.div whileHover={{ scale: 1.1 }} className="bg-gray-800 p-2 rounded-full">
-                <Github size={20} />
+                <Github size={20} onClick={() => window.open("https://github.com/akm2006/ChargePark", "_blank")} className="cursor-pointer"/>
               </motion.div>
             </div>
           </div>

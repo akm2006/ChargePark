@@ -84,13 +84,14 @@ const MapComponent = ({
                         <GoogleMap
                             mapContainerStyle={{ width: "100%", height: "60vh", borderRadius: "1rem" }}
                             center={userLocation}
-                            zoom={12}
+                            zoom={10}
                             options={{
                                 zoomControl: true,
                                 tilt: 0,
                                 gestureHandling: "auto",
                                 mapTypeControl: false,
-                                fullscreenControl: false,
+                                fullscreenControl: true,
+                                backgroundColor: "#rgba(0,0,0,0)",
                             }}
                             onLoad={(map) => {
                                 mapRef.current = map;
